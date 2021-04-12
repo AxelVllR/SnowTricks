@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+    <div style="height: 90vh; display: flex;justify-content: center;align-items: center" class="bg-primary">
+        <h1>Découvrez, Partagez, Échangez<br>
+            Bienvenue chez SnowTricks !</h1>
+    </div>
+    <div class="container mt-4">
+        <div class="mt-2 mb-5 text-center">
+            <h2>Liste des Tricks</h2>
+        </div>
+        {% for trick in tricks %}
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="..." alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{ trick.name }}</h5>
+                    <p class="card-text">{{ trick.description }}</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Crée le ... par ...</li>
+                        <li class="list-group-item">Modifié le ... par ...</li>
+                        <li class="list-group-item">
+                            <i class="far fa-thumbs-up"></i> 12 | <i class="fas fa-comments"></i> {{ trick.comments|length }}
+                        </li>
+                    </ul>
+                    <div style="display: flex;justify-content: end;">
+                        <a href="#" class="btn btn-warning">
+                            <i class="fas fa-pen-alt"></i>
+                        </a>
+                        <a href="#" class="btn btn-danger ml-2">
+                            <i class="fas fa-trash"></i>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
