@@ -5,10 +5,14 @@ namespace App\Entity;
 use App\Repository\TricksRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * @ORM\Entity(repositoryClass=TricksRepository::class)
+ * @UniqueEntity(fields={"name"}, message="Il existe déjà un Trick avec ce Nom")
  */
 class Tricks
 {
@@ -66,9 +70,23 @@ class Tricks
      */
     private $comments;
 
+    /**
+     * @ORM\OneToMany(targetEntity=TricksPictures::class, mappedBy="tricks", orphanRemoval=true, cascade={"persist"})
+     */
+    private $pictures;
+
+    /**
+     * @Assert\All({
+     *     @Assert\Image(mimeTypes="image/jpeg")
+ *     })
+     */
+    private $pictureFiles;
+
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->pictures = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -112,14 +130,24 @@ class Tricks
         return $this;
     }
 
-    public function getVideoUrls(): ?array
+    public function getVideoUrls(): ?string
     {
-        return $this->video_urls;
+
+        return implode(",", $this->video_urls);
     }
 
-    public function setVideoUrls(?array $video_urls): self
+    public function setVideoUrls(?string $video_urls): self
     {
-        $this->video_urls = $video_urls;
+        $entry = [];
+        $urls = explode(",", $video_urls);
+
+        foreach($urls as $url) {
+            if(filter_var($url, FILTER_VALIDATE_URL)) {
+                $entry[] = $url;
+            }
+        }
+
+        $this->video_urls = $entry;
 
         return $this;
     }
@@ -199,6 +227,58 @@ class Tricks
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * @return Collection|TricksPictures[]
+     */
+    public function getPictures(): Collection
+    {
+        return $this->pictures;
+    }
+
+    public function addPicture(TricksPictures $picture): self
+    {
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures[] = $picture;
+            $picture->setTricks($this);
+        }
+
+        return $this;
+    }
+
+    public function removePicture(TricksPictures $picture): self
+    {
+        if ($this->pictures->removeElement($picture)) {
+            // set the owning side to null (unless already changed)
+            if ($picture->getTricks() === $this) {
+                $picture->setTricks(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPictureFiles()
+    {
+        return $this->pictureFiles;
+    }
+
+    /**
+     * @param mixed $pictureFiles
+     * @return Tricks
+     */
+    public function setPictureFiles($pictureFiles)
+    {
+        foreach ($pictureFiles as $pictureFile) {
+            $picture = (new TricksPictures())->setImageFile($pictureFile);
+            $this->addPicture($picture);
+        }
+        $this->pictureFiles = $pictureFiles;
         return $this;
     }
 }

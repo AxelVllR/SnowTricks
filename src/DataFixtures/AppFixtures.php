@@ -9,18 +9,21 @@ use Doctrine\Persistence\ObjectManager;
 class AppFixtures extends Fixture
 {
     private const Groups = [
-        "Grabs",
-        "Rotations",
-        "Flips",
-        "Slides",
-        "One Foot Tricks",
-        "Old School"
+        "Grabs" => "primary",
+        "Rotations" => "secondary",
+        "Flips" => "success",
+        "Slides" => "danger",
+        "One Foot Tricks" => "warning",
+        "Old School" => "info"
     ];
 
     public function load(ObjectManager $manager)
     {
-        foreach(self::Groups as $group) {
-            $gp = (new Groups())->setName($group);
+        foreach(self::Groups as $group => $color) {
+            $gp = (new Groups())
+                ->setName($group)
+                ->setColor($color)
+            ;
             $manager->persist($gp);
         }
 

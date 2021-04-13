@@ -8,6 +8,8 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
         <script src="https://kit.fontawesome.com/e144745512.js" crossorigin="anonymous"></script>
 
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;500;600;700&display=swap" rel="stylesheet">
         <title>SnowTricks - {% block title %}{% endblock %}</title>
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
@@ -20,6 +22,11 @@
         {% endblock %}
     </head>
     <body>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+    </style>
         <header>
             <div class="collapse bg-dark" id="navbarHeader">
                 <div class="container">
@@ -31,8 +38,22 @@
                         <div class="col-sm-4 offset-md-1 py-4">
                             <h4 class="text-white">MENU</h4>
                             <ul class="list-unstyled">
-                                <li><a href="#" class="text-white">Connexion / Inscription</a></li>
-                                <li><a href="#" class="text-white">Contact</a></li>
+                                {% if app.user is defined and app.user != null %}
+                                    <li class="mb-2" style="display: flex; justify-content: start;align-items: center">
+                                        {% if app.user.filename %}
+                                            <img class="mr-2" style="border-radius: 50%;border: 1px solid darkseagreen" src="{{ vich_uploader_asset(app.user, 'imageFile') | imagine_filter('thumb') }}">
+                                        {% else %}
+                                            <div class="">
+                                                <i class="far fa-user mr-2" style="font-size: 2em;"></i>
+                                            </div>
+                                        {% endif %}
+                                        <a href="{{ path('profile') }}" class="btn btn-info">{{ app.user.pseudo }}</a>
+                                    </li>
+                                    <li><a href="{{ path('app_logout') }}" class="text-white">Déconnexion</a></li>
+                                {% else %}
+                                    <li><a href="{{ path('app_login') }}" class="text-white">Connexion / Inscription</a></li>
+                                    <li><a href="#" class="text-white">Contact</a></li>
+                                {% endif %}
                             </ul>
                         </div>
                     </div>
@@ -40,7 +61,7 @@
             </div>
             <div class="navbar navbar-dark bg-dark shadow-sm">
                 <div class="container d-flex justify-content-between">
-                    <a href="#" class="navbar-brand d-flex align-items-center">
+                    <a href="{{ path('landing_page') }}" class="navbar-brand d-flex align-items-center">
                         <i class="fas fa-snowboarding mr-2"></i>
                         <strong>SnowTricks</strong>
                     </a>

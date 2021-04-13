@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {% if btn == 'Ajouter' %}
+        Ajouter un
+    {% else %}
+        Modifier le
+    {% endif %}
+    Trick
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>{% if btn == 'Ajouter' %}
+                Ajouter un
+            {% else %}
+                Modifier le
+            {% endif %} Trick</h1>
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button style="width: 100%" class="btn btn-success">{{ btn }}</button>
+        {{ form_end(form) }}
+        {% if btn != 'Ajouter' and trick %}
+            <div class="row mt-3">
+                <div class="col-md-12 mb-4 text-center">
+                    Aperçu des Images
+                </div>
+                {% for picture in trick.pictures %}
+                    <div class="col-md-4 mb-3">
+                        <img src="{{ vich_uploader_asset(picture, 'imageFile') | imagine_filter('trickPictures') }}">
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

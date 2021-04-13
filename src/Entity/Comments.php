@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CommentsRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -30,6 +31,8 @@ class Comments
     private $user;
 
     /**
+     *   /**
+     * @Assert\NotBlank(message="Votre message ne doit pas être vide !")
      * @ORM\Column(type="text")
      */
     private $content;
