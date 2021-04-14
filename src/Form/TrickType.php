@@ -37,7 +37,6 @@ class TrickType extends AbstractType
                 'required' => false,
                 'multiple' => true
             ])
-            ->add('video_urls', TextType::class)
             //->add('updated_by')
             //->add('created_by')
         ;

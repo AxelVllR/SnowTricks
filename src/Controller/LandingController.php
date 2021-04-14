@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Groups;
 use App\Entity\Tricks;
 use App\Entity\Users;
 use App\Form\RegistrationFormType;
@@ -30,12 +31,41 @@ class LandingController extends AbstractController
     /**
      * @Route("/", name="landing_page")
      */
-    public function landingController(): Response
+    public function landingController(?int $page, Request $request): Response
     {
-        $tricks = $this->em->getRepository(Tricks::class)->findAll();
+        $groups = $this->em->getRepository(Groups::class)->findAll();
 
-        return $this->render('landing_page.html.twig', [
-            "tricks" => $tricks
-        ]);
+        $page = 1;
+
+        if($get = $request->query->get('page')) {
+            $page = $get;
+        }
+
+        $group = null;
+        if($grp = $request->query->get('group')) {
+            $group = $grp;
+        }
+
+        $nbOfTricks = $this->em->getRepository(Tricks::class)->countAll($group);
+
+        $pages = ceil($nbOfTricks / 10);
+
+        $first = ($page * 10) - 10;
+
+        $tricks = $this->em->getRepository(Tricks::class)->findByPages($first, 10, $group);
+
+        $options = [
+            "tricks" => $tricks,
+            "pages" => $pages,
+            "current" => $page,
+            "groups" => $groups,
+            "total" => $nbOfTricks
+        ];
+
+        if(isset($group) && !empty($group)) {
+            $options["group"] = $group;
+        }
+
+        return $this->render('landing_page.html.twig', $options);
     }
 }

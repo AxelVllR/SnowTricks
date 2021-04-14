@@ -39,10 +39,6 @@ class Tricks
      */
     private $group_trick;
 
-    /**
-     * @ORM\Column(type="array", nullable=true)
-     */
-    private $video_urls = [];
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -82,11 +78,17 @@ class Tricks
      */
     private $pictureFiles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick", cascade={"persist"})
+     */
+    private $videos;
+
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->pictures = new ArrayCollection();
+        $this->videos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -130,27 +132,6 @@ class Tricks
         return $this;
     }
 
-    public function getVideoUrls(): ?string
-    {
-
-        return implode(",", $this->video_urls);
-    }
-
-    public function setVideoUrls(?string $video_urls): self
-    {
-        $entry = [];
-        $urls = explode(",", $video_urls);
-
-        foreach($urls as $url) {
-            if(filter_var($url, FILTER_VALIDATE_URL)) {
-                $entry[] = $url;
-            }
-        }
-
-        $this->video_urls = $entry;
-
-        return $this;
-    }
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
@@ -279,6 +260,36 @@ class Tricks
             $this->addPicture($picture);
         }
         $this->pictureFiles = $pictureFiles;
+        return $this;
+    }
+
+    /**
+     * @return Collection|Video[]
+     */
+    public function getVideos(): Collection
+    {
+        return $this->videos;
+    }
+
+    public function addVideo(Video $video): self
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos[] = $video;
+            $video->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Video $video): self
+    {
+        if ($this->videos->removeElement($video)) {
+            // set the owning side to null (unless already changed)
+            if ($video->getTrick() === $this) {
+                $video->setTrick(null);
+            }
+        }
+
         return $this;
     }
 }

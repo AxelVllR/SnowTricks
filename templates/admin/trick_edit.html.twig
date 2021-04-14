@@ -21,14 +21,48 @@
             <button style="width: 100%" class="btn btn-success">{{ btn }}</button>
         {{ form_end(form) }}
         {% if btn != 'Ajouter' and trick %}
+            <div class="mt-5 mb-5 p-4 bg-light">
+                <h4 class="text-center mb-3">Ajouter une vidéo à votre Trick (Vous pouvez en ajouter autant que vous le souhaitez)</h4>
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('danger') %}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {{ form_start(video_form) }}
+                    {{ form_widget(video_form) }}
+                    <button style="width: 100%" class="btn btn-danger">Ajouter une vidéo</button>
+                {{ form_end(video_form) }}
+            </div>
             <div class="row mt-3">
-                <div class="col-md-12 mb-4 text-center">
-                    Aperçu des Images
+                <div class="col-md-12 mb-5 text-center" style="font-size: 2em;">
+                    <span class="badge badge-info">Aperçu des Médias</span>
                 </div>
                 {% for picture in trick.pictures %}
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-4 mb-3" style="display: flex;justify-content: center;align-items: center">
                         <img src="{{ vich_uploader_asset(picture, 'imageFile') | imagine_filter('trickPictures') }}">
                     </div>
+                {% endfor %}
+                {% for video in trick.videos %}
+                    <div class="col-md-4" style="display: flex;justify-content: center;align-items: center">
+                        <iframe id="video{{ video.id }}" width="100%" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <script>
+                        var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                        var url = "{{ video.url }}";
+                        var match = url.match(regExp);
+                        if (match && match[2].length == 11)
+                        {
+                            var id = match[2];
+                            var embedlink = "http://www.youtube.com/embed/" + id;
+                            var iframe = document.getElementById("video{{ video.id }}");
+                            iframe.src = embedlink;
+                        }
+                    </script>
                 {% endfor %}
             </div>
         {% endif %}

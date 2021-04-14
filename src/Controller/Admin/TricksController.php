@@ -3,9 +3,13 @@ namespace App\Controller\Admin;
 
 use App\Entity\Comments;
 use App\Entity\Tricks;
+use App\Entity\Video;
 use App\Form\CommentType;
 use App\Form\TrickType;
+use App\Form\VideoType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,10 +37,26 @@ class TricksController extends AbstractController
      */
     public function editTrick(int $id, Request $request) {
         $trick = $this->em->getRepository(Tricks::class)->findOneBy(["id" => $id]);
+
+
         if(!isset($trick) && empty($trick)) {
             $this->addFlash("danger", "Trick introuvable");
             return $this->redirectToRoute("landing_page");
         }
+
+        $video = (new Video())->setTrick($trick);
+        $videoForm = $this->createForm(VideoType::class, $video);
+        $videoForm->handleRequest($request);
+
+        if($videoForm->isSubmitted() && $videoForm->isValid()) {
+            $this->em->persist($video);
+            $this->em->flush();
+
+            $this->addFlash("success", "Vidéo Ajoutée !");
+
+            return $this->redirectToRoute("trick_edit", ["id" => $trick->getId()]);
+        }
+
 
         $form = $this->createForm(TrickType::class, $trick);
 
@@ -55,7 +75,8 @@ class TricksController extends AbstractController
         return $this->render('admin/trick_edit.html.twig', [
             'form' => $form->createView(),
             'btn' => "Modifier",
-            'trick' => $trick
+            'trick' => $trick,
+            'video_form' => $videoForm->createView()
         ]);
     }
 
@@ -117,6 +138,12 @@ class TricksController extends AbstractController
      */
     public function trickSee(int $id, Request $request) {
         $params = [];
+
+        $page = 1;
+        if($get = $request->get('page')) {
+            $page = $get;
+        }
+
         $trick = $this->em->getRepository(Tricks::class)->findOneBy(["id" => $id]);
 
         $params['trick'] = $trick;
@@ -125,6 +152,17 @@ class TricksController extends AbstractController
             $this->addFlash("danger", "Ce Trick n'existe pas !");
             return $this->redirectToRoute("landing_page");
         }
+
+
+        $nbOfComments = $this->em->getRepository(Comments::class)->countAll($trick);
+        $pages = ceil($nbOfComments / 10);
+        $first = ($page * 10) - 10;
+
+        $comments = $this->em->getRepository(Comments::class)->findByLimit($trick, $first, 10);
+
+        $params['current'] = $page;
+        $params['pages'] = $pages;
+        $params["comments"] = $comments;
 
         if($this->getUser()) {
             $comment = (new Comments())
