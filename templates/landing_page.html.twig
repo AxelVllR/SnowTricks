@@ -20,16 +20,16 @@
 
         <div class="album py-5 bg-light">
             <div class="container">
-                {% if app.user is defined and app.user != null %}
-                    <div class="mb-3 p-2 bg-dark" style="display: flex;justify-content: center; align-items: center;flex-direction: column">
-                        <h3 class="text-white rounded">Choisissez un groupe</h3>
-                        <div>
-                            {% for groupField in groups %}
-                                <a class="m-2 btn btn{% if group is defined and groupField.name != group %}-outline{% endif %}-{{ groupField.color }}" href="{{ path('landing_page') }}?group={{ groupField.id }}">{{ groupField.name }}</a>
-                            {% endfor %}
-                        </div>
-                        <a href="{{ path('landing_page') }}" class="btn btn-danger align-self-end"><i class="far fa-hand-peace"></i> Reinitialiser</a>
+                <div class="mb-3 p-2 bg-dark" style="display: flex;justify-content: center; align-items: center;flex-direction: column">
+                    <h3 class="text-white rounded">Choisissez un groupe</h3>
+                    <div>
+                        {% for groupField in groups %}
+                            <a class="m-2 btn btn{% if group is defined and groupField.id != group %}-outline{% endif %}-{{ groupField.color }}" href="{{ path('landing_page') }}?group={{ groupField.id }}">{{ groupField.name }}</a>
+                        {% endfor %}
                     </div>
+                    <a href="{{ path('landing_page') }}" class="btn btn-danger align-self-end"><i class="far fa-hand-peace"></i> Reinitialiser</a>
+                </div>
+                {% if app.user is defined and app.user != null %}
                     <div class="mb-5" style="display:flex;justify-content: end;align-items: end">
                         <a href="{{ path('trick_add') }}" style="display: flex;justify-content: center;align-items: center" class="btn btn-secondary">
                             <i class="mr-2 far fa-plus-square"></i>
