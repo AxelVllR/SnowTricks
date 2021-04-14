@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Profil
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-4" style="display: flex;justify-content: center;align-items: center;flex-direction: column">
+        <h1 class="mb-2">Mon Profil</h1>
+        {% if app.user.filename %}
+            <img class="mb-3" style="border-radius: 50%;border: 1px solid darkseagreen" src="{{ vich_uploader_asset(app.user, 'imageFile') | imagine_filter('profileForm') }}">
+        {% else %}
+            <div>
+                <i class="far fa-user mt-4 mb-4" style="font-size: 5em;"></i>
+            </div>
+        {% endif %}
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('danger') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button class="btn btn-success">Modifier</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

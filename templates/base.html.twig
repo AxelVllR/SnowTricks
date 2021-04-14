@@ -2,7 +2,15 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/e144745512.js" crossorigin="anonymous"></script>
+
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;500;600;700&display=swap" rel="stylesheet">
+        <title>SnowTricks - {% block title %}{% endblock %}</title>
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
         {% block stylesheets %}
@@ -14,6 +22,60 @@
         {% endblock %}
     </head>
     <body>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+    </style>
+        <header>
+            <div class="collapse bg-dark" id="navbarHeader">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-md-7 py-4">
+                            <h4 class="text-white">A Propos</h4>
+                            <p class="text-muted">Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.</p>
+                        </div>
+                        <div class="col-sm-4 offset-md-1 py-4">
+                            <h4 class="text-white">MENU</h4>
+                            <ul class="list-unstyled">
+                                {% if app.user is defined and app.user != null %}
+                                    <li class="mb-2" style="display: flex; justify-content: start;align-items: center">
+                                        {% if app.user.filename %}
+                                            <img class="mr-2" style="border-radius: 50%;border: 1px solid darkseagreen" src="{{ vich_uploader_asset(app.user, 'imageFile') | imagine_filter('thumb') }}">
+                                        {% else %}
+                                            <div class="">
+                                                <i class="far fa-user mr-2" style="font-size: 2em;"></i>
+                                            </div>
+                                        {% endif %}
+                                        <a href="{{ path('profile') }}" class="btn btn-info">{{ app.user.pseudo }}</a>
+                                    </li>
+                                    <li><a href="{{ path('app_logout') }}" class="text-white">Déconnexion</a></li>
+                                {% else %}
+                                    <li><a href="{{ path('app_login') }}" class="text-white">Connexion / Inscription</a></li>
+                                    <li><a href="#" class="text-white">Contact</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar navbar-dark bg-dark shadow-sm">
+                <div class="container d-flex justify-content-between">
+                    <a href="{{ path('landing_page') }}" class="navbar-brand d-flex align-items-center">
+                        <i class="fas fa-snowboarding mr-2"></i>
+                        <strong>SnowTricks</strong>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            </div>
+        </header>
         {% block body %}{% endblock %}
+        <footer class="text-muted mt-4 mb-4">
+            <div class="container">
+                <p>SnowTricks &copy; All rights reserved! 2021</p>
+            </div>
+        </footer>
     </body>
 </html>

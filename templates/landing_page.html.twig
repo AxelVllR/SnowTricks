@@ -1,0 +1,172 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+    <main role="main">
+
+        <section class="jumbotron text-center mb-0" style="border-radius: 0 !important;display: flex;flex-direction: column;justify-content: center;align-items: center;height: 70vh;background-position: center;background-image: url({{ asset('images/maxresdefault.jpg') }}); background-repeat: no-repeat;background-size: cover">
+            <div class="container">
+                <div class="p-5" style="background-color: rgba(219,219,219,0.73);">
+                    <h1 style="font-size: 4em" class="jumbotron-heading">SnowTricks</h1>
+                    <p class="lead text-muted">Partagez, Echangez, Ridez.</p>
+                </div>
+                <!--<p>
+                    <a href="#" class="btn btn-primary my-2">Main call to action</a>
+                    <a href="#" class="btn btn-secondary my-2">Secondary action</a>
+                </p>-->
+            </div>
+        </section>
+
+        <div class="album py-5 bg-light">
+            <div class="container">
+                {% if app.user is defined and app.user != null %}
+                    <div class="mb-3 p-2 bg-dark" style="display: flex;justify-content: center; align-items: center;flex-direction: column">
+                        <h3 class="text-white rounded">Choisissez un groupe</h3>
+                        <div>
+                            {% for groupField in groups %}
+                                <a class="m-2 btn btn{% if group is defined and groupField.name != group %}-outline{% endif %}-{{ groupField.color }}" href="{{ path('landing_page') }}?group={{ groupField.id }}">{{ groupField.name }}</a>
+                            {% endfor %}
+                        </div>
+                        <a href="{{ path('landing_page') }}" class="btn btn-danger align-self-end"><i class="far fa-hand-peace"></i> Reinitialiser</a>
+                    </div>
+                    <div class="mb-5" style="display:flex;justify-content: end;align-items: end">
+                        <a href="{{ path('trick_add') }}" style="display: flex;justify-content: center;align-items: center" class="btn btn-secondary">
+                            <i class="mr-2 far fa-plus-square"></i>
+                            <span>Ajouter un Trick</span>
+                        </a>
+                    </div>
+                {% endif %}
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('danger') %}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                <div class="d-flex justify-content-center align-items-center flex-column mb-5">
+                    <h3>Liste des Tricks</h3>
+                    <div class="badge badge-success" style="font-size: 1.5em;">{{ total }} Résultats</div>
+                </div>
+                <div class="row">
+                    {% for trick in tricks %}
+                        <div class="col-md-4 mb-3 d-flex justify-content-center align-items-center">
+                            <div class="card" style="width: 18rem;">
+                                {% if trick.pictures | length > 1 %}
+                                <div id="carouselExampleControls{{ trick.id }}" class="card-img-top carousel slide" data-ride="carousel">
+                                    <div class="carousel-inner">
+                                        {% for key, picture in trick.pictures %}
+                                            <div class="carousel-item {% if key == 0 %}active{% endif %}">
+                                                <img class="d-block w-100" src="{{ vich_uploader_asset(picture, 'imageFile') | imagine_filter('trickPictures') }}" alt="{{ picture.id }} Slide">
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <a class="carousel-control-prev" href="#carouselExampleControls{{ trick.id }}" role="button" data-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#carouselExampleControls{{ trick.id }}" role="button" data-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </div>
+                                {% elseif trick.pictures | length == 1 %}
+                                    {% for key, picture in trick.pictures %}
+                                        <img class="card-img-top" src="{{ vich_uploader_asset(picture, 'imageFile') | imagine_filter('trickPictures') }}">
+                                    {% endfor %}
+                                {% else %}
+                                    <div style="height: 286px;display: flex;justify-content: center;align-items: center;flex-direction: column" class="bg-light card-img-top">
+                                        <i class="far fa-images mb-3" style="font-size: 2em;"></i>
+                                        <span>Image Indisponible</span>
+                                    </div>
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ trick.name }}</h5>
+                                    <p class="card-text">{{ trick.description|u.truncate(80) }}...</p>
+                                    <hr class="mt-2 mb-0">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item" style="display: flex;flex-direction: column;justify-content: center;align-items: center">
+                                            <strong>Groupe</strong>
+                                            <span class="badge badge-success">{{ trick.groupTrick.name }}</span>
+                                        </li>
+                                        <li class="list-group-item">Crée le <strong>{{ trick.createdAt | date('d-m-Y') }}</strong> par <strong>{{ trick.createdBy.pseudo }}</strong></li>
+                                        {% if trick.updatedAt %}
+                                            <li class="list-group-item">Modifié le <stong>{{ trick.updatedAt|date('d-m-Y') }}</stong> par <strong>{{ trick.updatedBy.pseudo }}</strong></li>
+                                        {% endif %}
+                                        <li class="list-group-item">
+                                            <i class="fas fa-comments"></i> {{ trick.comments|length }}
+                                            <i class="fas fa-video ml-2"></i> {{ trick.videos|length }}
+                                            <i class="fas fa-image ml-2"></i> {{ trick.pictures|length }}
+                                        </li>
+                                    </ul>
+                                    <div style="display: flex;justify-content: end;">
+                                        {% if app.user is defined and app.user != null %}
+                                        <a href="{{ path('trick_edit', {"id": trick.id}) }}" class="btn btn-warning">
+                                            <i class="fas fa-pen-alt"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-danger ml-2" data-toggle="modal" data-target="#modal{{ trick.id }}">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                        {% endif %}
+                                        <a href="{{ path('trick_see', {'id':trick.id}) }}" class="btn btn-info ml-2">
+                                            <i class="far fa-eye"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MODAL -->
+                        <div class="modal fade" id="modal{{ trick.id }}" tabindex="-1" role="dialog" aria-labelledby="Modal{{ trick.id }}Label" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Supprimer le Trick {{ trick.name }}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body" style="display: flex;justify-content: center;align-items: center;flex-direction: column">
+                                        <span class="alert alert-danger">ATTENTION</span>
+                                        <p>Etes vous sûr de vouloir supprimer ce trick ?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                        <form action="{{ path('trick_delete', {'id':trick.id}) }}" method="post">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}">
+                                            <button class="btn btn-danger">
+                                                <i class="fas fa-trash"></i> OUI
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% if total > 10 %}
+                    <div class="row" style="display: flex;justify-content: center;align-items: center">
+                        <ul class="pagination">
+                            <li class="page-item {% if current == 1 %}disabled{% endif %}">
+                                <a href="{{ path('landing_page') }}?page={{ current - 1 }}{% if group is defined %}&group={{ group }}{% endif %}" class="page-link">Précédente</a>
+                            </li>
+                            {% for page in 1..pages %}
+                                <li class="page-item {% if current == page %}active{% endif%} ?>">
+                                    <a href="{{ path('landing_page') }}?page={{ page }}{% if group is defined %}&group={{ group }}{% endif %}" class="page-link">{{ page }}</a>
+                                </li>
+                            {% endfor %}
+                            <li class="page-item {% if current == pages %}disabled{% endif %}">
+                                <a href="{{ path('landing_page') }}?page={{ current + 1 }}{% if group is defined %}&group={{ group }}{% endif %}" class="page-link">Suivante</a>
+                            </li>
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </main>
+{% endblock %}

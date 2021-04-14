@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\GroupsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,6 +29,11 @@ class Groups
      * @ORM\OneToMany(targetEntity=Tricks::class, mappedBy="group_trick", orphanRemoval=true)
      */
     private $tricks;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $color;
 
     public function __construct()
     {
@@ -77,6 +83,18 @@ class Groups
                 $trick->setGroupTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(string $color): self
+    {
+        $this->color = $color;
 
         return $this;
     }
