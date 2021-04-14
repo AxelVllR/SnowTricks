@@ -1,0 +1,109 @@
+{
+  "Grabs": {
+    "Indy": {
+      "description": " la main arrière vient graber la carre frontside entre les pieds. Sur un saut droit c’est un Indy Grab, sur un hip ou un quarter en front c’est un frontside indy ou frontside grab alors que sur un saut en back (3.6 back par exemple) ça sera un backside Indy.",
+      "image_url": {
+        "0":"https://i.ytimg.com/vi/6yA3XqjTh_w/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLAe69E_7xyQs0yBCZusroRy7ttAsg",
+        "1":"https://i.pinimg.com/originals/ef/c7/dc/efc7dc1de99aabea04e3bfd02630a7ba.jpg"
+      },
+      "video_url": {
+        "0":"https://www.youtube.com/watch?v=6yA3XqjTh_w"
+      }
+    },
+    "Stalefish":{
+      "description": "Saisie de la carre backside de la planche entre les deux pieds avec la main arrière",
+      "image_url": {
+        "0":"https://i.ytimg.com/vi/6yA3XqjTh_w/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLAe69E_7xyQs0yBCZusroRy7ttAsg",
+        "1":"https://i.pinimg.com/originals/ef/c7/dc/efc7dc1de99aabea04e3bfd02630a7ba.jpg"
+      },
+      "video_url": {
+        "0":"https://www.youtube.com/watch?v=6yA3XqjTh_w"
+      }
+    }
+  },
+  "Rotations": {
+    "180": {
+      "description": "Pour les néophytes, le backside 180 ou 180 back est un saut avec un demi tour qui s'effectue côté pointes de pieds en envoyant les épaules dos à la pente lors de la rotation, ce qui fait qu'à l’atterrissage on se retrouve en marche arrière. Comme dans toute rotation l’important est la synchronisation entre l’impulsion et la rotation des épaules.",
+      "image_url": {
+        "0":"https://medias.lequipe.fr/img-photo-jpg/le-snowboard-un-sport-en-constante-evolution/1500000000779848/0:19,1080:568-640-325-75/63dae.jpg"
+      },
+      "video_url": {
+        "0":"https://www.youtube.com/watch?v=JMS2PGAFMcE",
+        "1":"https://www.youtube.com/watch?v=Sj7CJH9YvAo"
+      }
+    },
+    "360": {
+      "description": "Le 3.6 front ou frontside 3 est un tricks intéressant car on peut y mettre facilement beaucoup de style. C’est une rotation de 360 degrés du côté frontside ( à gauche pour les regular et à droite pour les goofy). Comme le 3.6 back, la vitesse de rotation est assez facile à gérer, mais si l’impulsion parait plus évidente en lançant les épaules de face, l’atterrissage l'est beaucoup moins car on est de dos le dernier quart du saut. On appelle ça une reception blind side…",
+      "image_url": {
+        "0":"https://i.ytimg.com/vi/bqk4i2fii7Q/maxresdefault.jpg",
+        "1":"https://images7.alphacoders.com/598/598158.jpg"
+      },
+      "video_url": {
+        "0": "https://www.youtube.com/watch?v=GS9MMT_bNn8"
+      }
+    }
+  },
+  "Flips": {
+    "Front-Flip": {
+      "description": "rotations en avant",
+      "image_url": {
+        "0":"https://i.ytimg.com/vi/bqk4i2fii7Q/maxresdefault.jpg",
+        "1":"https://images7.alphacoders.com/598/598158.jpg"
+      },
+      "video_url": {
+        "0":"https://www.youtube.com/watch?v=xhvqu2XBvI0"
+      }
+    },
+    "Back-Flip": {
+      "description": "rotations en arrière",
+      "image_url": {
+        "0":"https://c4.wallpaperflare.com/wallpaper/626/941/171/snow-mountains-winter-snowboarding-wallpaper-preview.jpg"
+      },
+      "video_url": {
+        "0":"https://www.youtube.com/watch?v=arzLq-47QFA"
+      }
+    }
+  },
+  "Slides": {
+    "Nose-Slide": {
+      "description": "Un slide consiste à glisser sur une barre de slide. Le slide se fait soit avec la planche dans l'axe de la barre, soit perpendiculaire, soit plus ou moins désaxé. ",
+      "image_url": {
+        "0":"https://wallpaper.dog/large/5536427.jpg"
+      },
+      "video_url": {
+        "0":"https://www.youtube.com/watch?v=oAK9mK7wWvw"
+      }
+    },
+    "Tail-Slide": {
+      "description": "Un slide consiste à glisser sur une barre de slide. Le slide se fait soit avec la planche dans l'axe de la barre, soit perpendiculaire, soit plus ou moins désaxé. ",
+      "image_url": {
+        "0":"https://wallpaper.dog/large/5536427.jpg"
+      },
+      "video_url": {
+        "0":"https://www.youtube.com/watch?v=HRNXjMBakwM"
+      }
+    }
+  },
+  "One Foot Tricks": {
+    "One Foot Indy": {
+      "description": "Figures réalisée avec un pied décroché de la fixation, afin de tendre la jambe correspondante pour mettre en évidence le fait que le pied n'est pas fixé. Ce type de figure est extrêmement dangereuse pour les ligaments du genou en cas de mauvaise réception. ",
+      "image_url": {
+        "0":"https://p4.wallpaperbetter.com/wallpaper/827/482/467/winter-flight-jump-the-trick-wallpaper-preview.jpg"
+      },
+      "video_url": {
+        "0":"https://www.youtube.com/watch?v=LWUfrwCofuA"
+      }
+    }
+  },
+  "Old School": {
+    "Japan Grab": {
+      "description": "Figure Old School (Grab)",
+      "image_url": {
+        "0":"https://images.wallpaperscraft.com/image/snowboarder_snowboard_stunt_158772_3840x2160.jpg"
+        },
+      "video_url": {
+         "0":"https://www.youtube.com/watch?v=jH76540wSqU"
+      }
+    }
+  }
+}

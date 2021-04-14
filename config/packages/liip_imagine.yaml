@@ -9,7 +9,7 @@ liip_imagine:
                 thumbnail:
                     size: [40,40]
                     mode: outbound
-                    allow_upscale: true
+                    allow_upscale: false
         profileForm:
             quality: 75
             filters:
@@ -30,9 +30,11 @@ liip_imagine:
                 thumbnail:
                     size: [1200,400]
                     mode: outbound
+                    allow_upscale: true
         trickPagePicturesMini:
             quality: 75
             filters:
                 thumbnail:
                     size: [150,150]
                     mode: outbound
+                    allow_upscale: true
