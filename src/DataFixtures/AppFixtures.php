@@ -54,6 +54,7 @@ class AppFixtures extends Fixture
             ->setFilename("userLogoExample.jpg")
             ->setPseudo("AxelVllR")
             ->setEmail("vallieraxel@gmail.com")
+            ->setIsActivated(true)
             ->setPassword(password_hash("axelou", PASSWORD_ARGON2I));
         $manager->persist($userMe);
 

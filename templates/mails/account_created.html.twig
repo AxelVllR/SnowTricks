@@ -1,0 +1,5 @@
+<h2>Bonjour {{ user.pseudo }} !</h2>
+
+<p>Bienvenue chez SnowTricks !</p>
+<p>Il ne te restes plus qu'à activer ton compte maintenant.</p>
+<a style="padding: 8px;color: white;text-decoration: none; background-color: indianred; border-radius: 15px;" href="{{ baseUrl }}{{ path('token_activation', {"token":token}) }}">Cliques-ICI</a>
