@@ -49,14 +49,14 @@ class AppFixtures extends Fixture
         // Create Users and save them
         $users = [];
 
-        //ME
-        $userMe = (new Users())
+        //user default
+        $userDefault = (new Users())
             ->setFilename("userLogoExample.jpg")
-            ->setPseudo("AxelVllR")
-            ->setEmail("vallieraxel@gmail.com")
+            ->setPseudo("Admin")
+            ->setEmail("admin@admin.fr")
             ->setIsActivated(true)
-            ->setPassword(password_hash("axelou", PASSWORD_ARGON2I));
-        $manager->persist($userMe);
+            ->setPassword(password_hash("admin", PASSWORD_ARGON2I));
+        $manager->persist($userDefault);
 
         $i = 0;
         while($i < 20) {
