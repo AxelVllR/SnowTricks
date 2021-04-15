@@ -25,7 +25,7 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $faker = Factory::create();
+        $faker = Factory::create('fr_FR');
         // Create Dirs
         if(!file_exists(__DIR__ . '/../../public/images/tricks')) {
             mkdir(__DIR__ . '/../../public/images/tricks');

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Connexion{% endblock %}
 
 {% block body %}
     <div class="container">
@@ -46,7 +46,10 @@
                     </div>
                 </div>
                 <div class="mt-4 text-center">
-                    Pas de compte ? <a href="{{ path('app_register') }}">Inscrivez-vous</a>
+                    Pas de compte ? <a href="{{ path('app_register') }}">Inscrivez-vous</a>.
+                </div>
+                <div class="text-center">
+                    <a href="{{ path('password_forgot') }}">J'ai oublié mon mot de passe</a>
                 </div>
             </div>
         </div>

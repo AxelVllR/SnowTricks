@@ -43,6 +43,27 @@ class MailerManager {
 
     }
 
+
+    public function sendPasswordForgot(Users $user, $url) {
+        $mail = $user->getEmail();
+        $obj = $user->getPseudo() . ', Vous avez oublié votre mot de passe ?';
+
+        $token = $user->getToken();
+
+
+        $content = $this->container->get('twig')->render(
+            'mails/password_forgot.html.twig',
+            [
+                'user' => $user,
+                'token' => $token,
+                'baseUrl' => $url
+            ]
+        );
+
+        return $this->sendMail($mail,$obj, $content);
+
+    }
+
     public function sendMail($to, $obj, $content): int
     {
         $message = (new \Swift_Message($obj))
