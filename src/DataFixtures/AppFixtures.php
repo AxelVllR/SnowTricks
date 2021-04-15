@@ -25,7 +25,7 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $faker = Factory::create();
+        $faker = Factory::create('fr_FR');
         // Create Dirs
         if(!file_exists(__DIR__ . '/../../public/images/tricks')) {
             mkdir(__DIR__ . '/../../public/images/tricks');
@@ -54,6 +54,7 @@ class AppFixtures extends Fixture
             ->setFilename("userLogoExample.jpg")
             ->setPseudo("AxelVllR")
             ->setEmail("vallieraxel@gmail.com")
+            ->setIsActivated(true)
             ->setPassword(password_hash("axelou", PASSWORD_ARGON2I));
         $manager->persist($userMe);
 

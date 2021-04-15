@@ -69,6 +69,16 @@ class Users implements UserInterface, \Serializable
      */
     private $updated_at;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $token;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_activated;
+
 
     public function getId(): ?int
     {
@@ -232,5 +242,29 @@ class Users implements UserInterface, \Serializable
             $this->password,
             ) = unserialize($serialized);
 
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): self
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    public function getIsActivated(): ?bool
+    {
+        return $this->is_activated;
+    }
+
+    public function setIsActivated(?bool $is_activated): self
+    {
+        $this->is_activated = $is_activated;
+
+        return $this;
     }
 }

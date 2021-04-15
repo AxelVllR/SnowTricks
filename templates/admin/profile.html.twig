@@ -24,9 +24,14 @@
                 {{ message }}
             </div>
         {% endfor %}
+        {% if type is not defined %}
+            <a href="{{ path('update_password') }}" class="btn btn-danger mt-2 mb-3">Mettre à jour mon mot de passe</a>
+        {% else %}
+            <a href="{{ path('profile') }}" class="btn btn-danger mt-2 mb-3">Revenir sur mon profil</a>
+        {% endif %}
         {{ form_start(form) }}
             {{ form_widget(form) }}
-            <button class="btn btn-success">Modifier</button>
+            <button class="btn btn-success w-100">Modifier</button>
         {{ form_end(form) }}
     </div>
 {% endblock %}

@@ -90,7 +90,7 @@
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item" style="display: flex;flex-direction: column;justify-content: center;align-items: center">
                                             <strong>Groupe</strong>
-                                            <span class="badge badge-success">{{ trick.groupTrick.name }}</span>
+                                            <span class="badge badge-{{ trick.groupTrick.color }}">{{ trick.groupTrick.name }}</span>
                                         </li>
                                         <li class="list-group-item">Crée le <strong>{{ trick.createdAt | date('d-m-Y') }}</strong> par <strong>{{ trick.createdBy.pseudo }}</strong></li>
                                         {% if trick.updatedAt %}

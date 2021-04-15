@@ -73,6 +73,11 @@ class UsersAuthenticator extends AbstractFormLoginAuthenticator implements Passw
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
+        if ($user->getIsActivated() !== true) {
+            // fail authentication with a custom error
+            throw new CustomUserMessageAuthenticationException("Votre compte n'est pas encore activé.. vérifiez vos mails");
+            return null;
+        }
 
         return $user;
     }
