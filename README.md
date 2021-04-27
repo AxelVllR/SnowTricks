@@ -47,7 +47,7 @@ php bin/console doctrine:fixtures:load (enregistrement des données de tests)
 - Il ne vous restes plus qu'à lancer le serveur :
 
 ```
-php bin/console server:run
+php bin/console server:run OU symfony serve
 ```
 
 - Si l'url générée est différente de 'localhost:8000', veillez à bien changer la valeur de APP_URL dans le .env !! Dans le cas contraire, les bouton de réinitialisation du mot de passe et validation de compte dans les mails ne fonctionneront pas.
