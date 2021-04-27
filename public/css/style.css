@@ -1,0 +1,18 @@
+#rowMedias {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+
+@media screen and (max-width: 768px) {
+    #rowMedias {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    #showMedias {
+        display: none;
+    }
+}

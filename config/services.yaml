@@ -5,6 +5,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     app.url: '%env(APP_URL)%'
+    trick_images_directory: '%kernel.project_dir%/public/tricks'
+    user_images_directory: '%kernel.project_dir%/public/users'
 
 services:
     # default configuration for services in *this* file

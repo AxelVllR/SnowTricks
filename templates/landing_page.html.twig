@@ -7,8 +7,8 @@
 
         <section class="jumbotron text-center mb-0" style="border-radius: 0 !important;display: flex;flex-direction: column;justify-content: center;align-items: center;height: 70vh;background-position: center;background-image: url({{ asset('images/maxresdefault.jpg') }}); background-repeat: no-repeat;background-size: cover">
             <div class="container">
-                <div class="p-5" style="background-color: rgba(219,219,219,0.73);">
-                    <h1 style="font-size: 4em" class="jumbotron-heading">SnowTricks</h1>
+                <div class="p-2" style="background-color: rgba(219,219,219,0.73);">
+                    <h2 class="h1 display-4">Snow<br>Tricks</h2>
                     <p class="lead text-muted">Partagez, Echangez, Ridez.</p>
                 </div>
                 <!--<p>
@@ -24,7 +24,7 @@
                     <h3 class="text-white rounded">Choisissez un groupe</h3>
                     <div>
                         {% for groupField in groups %}
-                            <a class="m-2 btn btn{% if group is defined and groupField.id != group %}-outline{% endif %}-{{ groupField.color }}" href="{{ path('landing_page') }}?group={{ groupField.id }}">{{ groupField.name }}</a>
+                            <a class="m-2 btn btn{% if group is not defined or groupField.id != group %}-outline{% endif %}-{{ groupField.color }}" href="{{ path('landing_page') }}?group={{ groupField.id }}">{{ groupField.name }}</a>
                         {% endfor %}
                     </div>
                     <a href="{{ path('landing_page') }}" class="btn btn-danger align-self-end"><i class="far fa-hand-peace"></i> Reinitialiser</a>
@@ -60,7 +60,7 @@
                                     <div class="carousel-inner">
                                         {% for key, picture in trick.pictures %}
                                             <div class="carousel-item {% if key == 0 %}active{% endif %}">
-                                                <img class="d-block w-100" src="{{ vich_uploader_asset(picture, 'imageFile') | imagine_filter('trickPictures') }}" alt="{{ picture.id }} Slide">
+                                                <img class="d-block w-100" width="300px" height="300px" src="{{ asset('tricks/' ~ picture.filename) }}" alt="{{ picture.id }} Slide">
                                             </div>
                                         {% endfor %}
                                     </div>
@@ -75,7 +75,7 @@
                                 </div>
                                 {% elseif trick.pictures | length == 1 %}
                                     {% for key, picture in trick.pictures %}
-                                        <img class="card-img-top" src="{{ vich_uploader_asset(picture, 'imageFile') | imagine_filter('trickPictures') }}">
+                                        <img class="card-img-top" width="300px" height="300px" src="{{ asset('tricks/' ~ picture.filename) }}">
                                     {% endfor %}
                                 {% else %}
                                     <div style="height: 286px;display: flex;justify-content: center;align-items: center;flex-direction: column" class="bg-light card-img-top">
@@ -104,14 +104,14 @@
                                     </ul>
                                     <div style="display: flex;justify-content: end;">
                                         {% if app.user is defined and app.user != null %}
-                                        <a href="{{ path('trick_edit', {"id": trick.id}) }}" class="btn btn-warning">
+                                        <a href="{{ path('trick_edit', {"slug": trick.slug}) }}" class="btn btn-warning">
                                             <i class="fas fa-pen-alt"></i>
                                         </a>
                                         <a href="#" class="btn btn-danger ml-2" data-toggle="modal" data-target="#modal{{ trick.id }}">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                         {% endif %}
-                                        <a href="{{ path('trick_see', {'id':trick.id}) }}" class="btn btn-info ml-2">
+                                        <a href="{{ path('trick_see', {'slug':trick.slug}) }}" class="btn btn-info ml-2">
                                             <i class="far fa-eye"></i>
                                         </a>
                                     </div>
@@ -135,7 +135,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                                        <form action="{{ path('trick_delete', {'id':trick.id}) }}" method="post">
+                                        <form action="{{ path('trick_delete', {'slug':trick.slug}) }}" method="post">
                                             <input type="hidden" name="_method" value="DELETE">
                                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}">
                                             <button class="btn btn-danger">

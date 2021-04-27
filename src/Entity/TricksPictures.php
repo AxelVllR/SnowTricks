@@ -3,14 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\TricksPicturesRepository;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @ORM\Entity(repositoryClass=TricksPicturesRepository::class)
- * @Vich\Uploadable
+ *
  */
 class TricksPictures
 {
@@ -20,16 +19,6 @@ class TricksPictures
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @Vich\UploadableField(mapping="tricks_images", fileNameProperty="filename")
-     * @var File|null
-     * @Assert\Image(
-     *     mimeTypes="image/jpeg"
-     *
-     * )
-     */
-    private $imageFile;
 
 
     /**
@@ -43,27 +32,16 @@ class TricksPictures
      */
     private $tricks;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_primary;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return File|null
-     */
-    public function getImageFile(): ?File
-    {
-        return $this->imageFile;
-    }
-
-    /**
-     * @param File|UploadedFile|null $imageFile
-     */
-    public function setImageFile(?File $imageFile = null): self
-    {
-        $this->imageFile = $imageFile;
-        return $this;
-    }
 
     public function getFilename(): ?string
     {
@@ -85,6 +63,18 @@ class TricksPictures
     public function setTricks(?Tricks $tricks): self
     {
         $this->tricks = $tricks;
+
+        return $this;
+    }
+
+    public function getIsPrimary(): ?bool
+    {
+        return $this->is_primary;
+    }
+
+    public function setIsPrimary(?bool $is_primary): self
+    {
+        $this->is_primary = $is_primary;
 
         return $this;
     }

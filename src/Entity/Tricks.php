@@ -71,17 +71,16 @@ class Tricks
      */
     private $pictures;
 
-    /**
-     * @Assert\All({
-     *     @Assert\Image(mimeTypes="image/jpeg")
- *     })
-     */
-    private $pictureFiles;
 
     /**
      * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick", cascade={"persist"})
      */
     private $videos;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
 
 
     public function __construct()
@@ -104,6 +103,8 @@ class Tricks
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        $this->slug = strtolower(str_replace(" ", "-", $this->name));
 
         return $this;
     }
@@ -241,27 +242,6 @@ class Tricks
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getPictureFiles()
-    {
-        return $this->pictureFiles;
-    }
-
-    /**
-     * @param mixed $pictureFiles
-     * @return Tricks
-     */
-    public function setPictureFiles($pictureFiles)
-    {
-        foreach ($pictureFiles as $pictureFile) {
-            $picture = (new TricksPictures())->setImageFile($pictureFile);
-            $this->addPicture($picture);
-        }
-        $this->pictureFiles = $pictureFiles;
-        return $this;
-    }
 
     /**
      * @return Collection|Video[]
@@ -289,6 +269,18 @@ class Tricks
                 $video->setTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
