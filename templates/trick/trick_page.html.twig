@@ -72,7 +72,7 @@
                         {% for comment in comments %}
                             <div class="card p-3 mt-3">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div class="user d-flex flex-row align-items-center"> <img src="{{ vich_uploader_asset(comment.user, 'imageFile') | imagine_filter('thumb') }}" width="30" class="user-img rounded-circle mr-2">
+                                    <div class="user d-flex flex-row align-items-center"> <img src="{{ asset('/users/'~comment.user.filename)}}" width="30px" height="30px" class="user-img rounded-circle mr-2">
                                         <span>
                                             <small class="font-weight-bold text-primary">{{ comment.user.pseudo }}</small>
                                             <small class="font-weight-bold">{{ comment.content }}</small>

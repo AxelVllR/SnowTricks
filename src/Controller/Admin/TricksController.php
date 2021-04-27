@@ -220,7 +220,7 @@ class TricksController extends AbstractController
 
                 $this->addFlash("success", "Commentaire Ajouté");
 
-                return $this->redirectToRoute("trick_see", ["id" => $trick->getId()]);
+                return $this->redirectToRoute("trick_see", ["slug" => $trick->getSlug()]);
             }
         }
 
