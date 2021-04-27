@@ -27,11 +27,11 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create('fr_FR');
         // Create Dirs
-        if(!file_exists(__DIR__ . '/../../public/images/tricks')) {
-            mkdir(__DIR__ . '/../../public/images/tricks');
+        if(!file_exists(__DIR__ . '/../../public/tricks')) {
+            mkdir(__DIR__ . '/../../public/tricks');
         }
-        if(!file_exists(__DIR__ . '/../../public/images/users')) {
-            mkdir(__DIR__ . '/../../public/images/users');
+        if(!file_exists(__DIR__ . '/../../public/users')) {
+            mkdir(__DIR__ . '/../../public/users');
         }
         // Create Groups
         foreach(self::Groups as $group => $color) {
@@ -49,14 +49,14 @@ class AppFixtures extends Fixture
         // Create Users and save them
         $users = [];
 
-        //ME
-        $userMe = (new Users())
+        //user default
+        $userDefault = (new Users())
             ->setFilename("userLogoExample.jpg")
-            ->setPseudo("AxelVllR")
-            ->setEmail("vallieraxel@gmail.com")
+            ->setPseudo("Admin")
+            ->setEmail("admin@admin.fr")
             ->setIsActivated(true)
-            ->setPassword(password_hash("axelou", PASSWORD_ARGON2I));
-        $manager->persist($userMe);
+            ->setPassword(password_hash("admin", PASSWORD_ARGON2I));
+        $manager->persist($userDefault);
 
         $i = 0;
         while($i < 20) {
@@ -83,8 +83,10 @@ class AppFixtures extends Fixture
                     ->setName($name)
                     ->setDescription($values['description'])
                     ->setGroupTrick($group);
+
                 $manager->persist($trick);
 
+                $i = 0;
                 foreach($values['image_url'] as $key => $imageUrl) {
                     $exp = explode("/", $imageUrl);
                     $file = end($exp);
@@ -95,7 +97,13 @@ class AppFixtures extends Fixture
                         ->setFilename($url)
                         ->setTricks($trick);
 
+                    if($i == 0) {
+                        $image->setIsPrimary(true);
+                    }
+
                     $manager->persist($image);
+
+                    $i++;
                 }
 
                 foreach($values['video_url'] as $key => $url) {
@@ -130,14 +138,15 @@ class AppFixtures extends Fixture
     public function saveImage($url, $filename) {
         $data = $this->file_get_contents_curl($url);
 
-        $fp = __DIR__ . '/../../public/images/users/' . $filename;
+        $fp = __DIR__ . '/../../public/users/' . $filename;
 
         file_put_contents( $fp, $data );
     }
+
     public function saveImageTrick($url, $filename) {
         $data = $this->file_get_contents_curl($url);
 
-        $fp = __DIR__ . '/../../public/images/tricks/' . $filename;
+        $fp = __DIR__ . '/../../public/tricks/' . $filename;
 
         file_put_contents( $fp, $data );
     }

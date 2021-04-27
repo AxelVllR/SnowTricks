@@ -46,6 +46,17 @@ class RegistrationController extends AbstractController
             $user->setToken(rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '='));
 
 
+            $imagePost = $form->get('image')->getData();
+            // generate filename
+            $filename = md5(uniqid()) . '.' . $imagePost->guessExtension();
+            // copy image in directory
+            $imagePost->move(
+                $this->getParameter("user_images_directory"),
+                $filename
+            );
+
+            $user->setFilename($filename);
+
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);

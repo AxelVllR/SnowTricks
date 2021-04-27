@@ -33,10 +33,10 @@ class TrickType extends AbstractType
                 },
                 'choice_label' => 'name'
             ])
-            ->add('pictureFiles', FileType::class, [
+            /*->add('pictureFiles', FileType::class, [
                 'required' => false,
                 'multiple' => true
-            ])
+            ])*/
             //->add('updated_by')
             //->add('created_by')
         ;

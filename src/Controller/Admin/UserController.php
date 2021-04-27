@@ -39,6 +39,18 @@ class UserController extends AbstractController {
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+
+            $imagePost = $form->get('image')->getData();
+            // generate filename
+            $filename = md5(uniqid()) . '.' . $imagePost->guessExtension();
+            // copy image in directory
+            $imagePost->move(
+                $this->getParameter("user_images_directory"),
+                $filename
+            );
+
+            $user->setFilename($filename);
+
             $this->em->flush();
 
             $this->addFlash("success", "Profil Modifié");

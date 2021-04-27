@@ -8,7 +8,7 @@
     <div class="container mt-4" style="display: flex;justify-content: center;align-items: center;flex-direction: column">
         <h1 class="mb-2">Mon Profil</h1>
         {% if app.user.filename %}
-            <img class="mb-3" style="border-radius: 50%;border: 1px solid darkseagreen" src="{{ vich_uploader_asset(app.user, 'imageFile') | imagine_filter('profileForm') }}">
+            <img class="mb-3" style="border-radius: 50%;border: 1px solid darkseagreen" width="150px" height="150px" src="{{ asset('users/' ~ app.user.filename) }}">
         {% else %}
             <div>
                 <i class="far fa-user mt-4 mb-4" style="font-size: 5em;"></i>

@@ -1,0 +1,26 @@
+{% for key, picture in trick.pictures %}
+    {% if primaryImage is defined and picture == primaryImage %}
+
+    {% elseif key != 0 %}
+        <div class="m-4">
+            <img style="border-radius: 15px;" width="150px" height="150px" src="{{ asset('tricks/' ~ picture.filename) }}">
+        </div>
+    {% endif %}
+{% endfor %}
+{% for video in trick.videos %}
+    <div class="m-4" style="display: flex;justify-content: center;align-items: center">
+        <iframe id="video{{ video.id }}" width="100%" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <script>
+        var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        var url = "{{ video.url }}";
+        var match = url.match(regExp);
+        if (match && match[2].length == 11)
+        {
+            var id = match[2];
+            var embedlink = "http://www.youtube.com/embed/" + id;
+            var iframe = document.getElementById("video{{ video.id }}");
+            iframe.src = embedlink;
+        }
+    </script>
+{% endfor %}

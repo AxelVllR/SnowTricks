@@ -7,16 +7,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
  * @UniqueEntity(fields={"email"}, message="Il existe déjà un compte avec cet Email")
- * @Vich\Uploadable
  */
-class Users implements UserInterface, \Serializable
+class Users implements UserInterface
 {
 
     /**
@@ -26,15 +24,6 @@ class Users implements UserInterface, \Serializable
      */
     private $id;
 
-    /**
-     * @Vich\UploadableField(mapping="profile_logo", fileNameProperty="filename")
-     * @var File|null
-     * @Assert\Image(
-     *     mimeTypes="image/jpeg"
-     *
-     * )
-     */
-    private $imageFile;
 
     /**
      * @ORM\Column(type="string")
@@ -85,25 +74,6 @@ class Users implements UserInterface, \Serializable
         return $this->id;
     }
 
-    /**
-     * @return File|null
-     */
-    public function getImageFile(): ?File
-    {
-        return $this->imageFile;
-    }
-
-    /**
-     * @param File|UploadedFile|null $imageFile
-     */
-    public function setImageFile(?File $imageFile = null)
-    {
-        $this->imageFile = $imageFile;
-
-        if (null !== $imageFile) {
-            $this->updated_at = new \DateTimeImmutable();
-        }
-    }
 
     /**
      * @return string|null
@@ -221,27 +191,6 @@ class Users implements UserInterface, \Serializable
         $this->updated_at = $updated_at;
 
         return $this;
-    }
-
-    public function serialize()
-    {
-        return serialize(array(
-            $this->id,
-            $this->pseudo,
-            $this->email,
-            $this->password,
-        ));
-    }
-
-    public function unserialize($serialized)
-    {
-        list (
-            $this->id,
-            $this->pseudo,
-            $this->email,
-            $this->password,
-            ) = unserialize($serialized);
-
     }
 
     public function getToken(): ?string

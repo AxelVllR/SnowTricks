@@ -16,40 +16,62 @@
             {% else %}
                 Modifier le
             {% endif %} Trick</h1>
-        {{ form_start(form) }}
-            {{ form_widget(form) }}
-            <button style="width: 100%" class="btn btn-success">{{ btn }}</button>
-        {{ form_end(form) }}
+
         {% if btn != 'Ajouter' and trick %}
-            <div class="mt-5 mb-5 p-4 bg-light">
-                <h4 class="text-center mb-3">Ajouter une vidéo à votre Trick (Vous pouvez en ajouter autant que vous le souhaitez)</h4>
-                {% for message in app.flashes('success') %}
-                    <div class="alert alert-success">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-                {% for message in app.flashes('danger') %}
-                    <div class="alert alert-danger">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-                {{ form_start(video_form) }}
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% for message in app.flashes('danger') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <div class="mt-5 mb-5 p-4 bg-light row">
+                <div class="col-md-6 d-flex justify-content-center align-items-center flex-column mt-3 mb-3">
+                    <h4 class="text-center mb-3">Ajouter une vidéo</h4>
+                    {{ form_start(video_form) }}
                     {{ form_widget(video_form) }}
-                    <button style="width: 100%" class="btn btn-danger">Ajouter une vidéo</button>
-                {{ form_end(video_form) }}
+                    <button style="width: 100%" class="btn btn-danger">Ajouter</button>
+                    {{ form_end(video_form) }}
+                </div>
+                <div class="col-md-6 d-flex justify-content-center align-items-center flex-column mt-3 mb-3">
+                    <h4 class="text-center mb-3">Ajouter une Image</h4>
+                    {{ form_start(image_form) }}
+                    {{ form_widget(image_form) }}
+                    <button style="width: 100%" class="btn btn-warning">Ajouter</button>
+                    {{ form_end(image_form) }}
+                </div>
             </div>
-            <div class="row mt-3">
+            <div class="row mt-3 bg-light p-3">
                 <div class="col-md-12 mb-5 text-center" style="font-size: 2em;">
                     <span class="badge badge-info">Aperçu des Médias</span>
                 </div>
                 {% for picture in trick.pictures %}
-                    <div class="col-md-4 mb-3" style="display: flex;justify-content: center;align-items: center">
-                        <img src="{{ vich_uploader_asset(picture, 'imageFile') | imagine_filter('trickPictures') }}">
+                    <div class="col-md-4 mb-3" style="display: flex;justify-content: center;align-items: center; flex-direction: column">
+                        <img width="150px" height="150px" src="{{ asset('tricks/' ~ picture.filename) }}">
+                        <div class="d-flex justify-content-center align-items-center mt-2">
+                            {% if picture.isPrimary is defined and picture.isPrimary == true %}
+                                <div class="mr-2"><span class="badge badge-success">Image principale</span></div>
+                            {% else %}
+                                <a href="{{ path('image_primary', {'id':picture.id}) }}" class="btn btn-warning mr-2">
+                                    <i class="far fa-star"></i>
+                                </a>
+                                <a href="{{ path('image_delete', {'id':picture.id}) }}" class="btn btn-danger">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            {% endif %}
+                        </div>
                     </div>
                 {% endfor %}
                 {% for video in trick.videos %}
-                    <div class="col-md-4" style="display: flex;justify-content: center;align-items: center">
+                    <div class="col-md-4" style="display: flex;justify-content: center;align-items: center;flex-direction: column">
                         <iframe id="video{{ video.id }}" width="100%" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <a href="{{ path('video_delete', {'id':video.id}) }}" class="btn btn-danger mt-2">
+                            <i class="fas fa-trash-alt mr-2"></i>
+                            Supprimer
+                        </a>
                     </div>
                     <script>
                         var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -66,5 +88,13 @@
                 {% endfor %}
             </div>
         {% endif %}
+        <hr class="mt-5">
+        <div class="mt-4">
+            <h2 class="text-center mb-2">Informations de base</h2>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button style="width: 100%" class="btn btn-success">{{ btn }}</button>
+            {{ form_end(form) }}
+        </div>
     </div>
 {% endblock %}
