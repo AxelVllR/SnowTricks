@@ -100,6 +100,6 @@
             "require": "5.2.*"
         }
     },
-    "name": "SnowTricks",
+    "name": "snowtricks",
     "description": "Site communautaire sur le snowboarding"
 }
