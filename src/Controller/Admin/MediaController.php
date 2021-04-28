@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\TricksPictures;
 use App\Entity\Video;
+use App\Services\ImageManager;
 use Doctrine\ORM\EntityManagerInterface;
 use http\Env\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,9 +17,14 @@ class MediaController extends AbstractController {
      * @var EntityManagerInterface
      */
     private $em;
+    /**
+     * @var ImageManager
+     */
+    private $img;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, ImageManager $img)
     {
+        $this->img = $img;
         $this->em = $em;
     }
 
@@ -44,6 +50,7 @@ class MediaController extends AbstractController {
         $trick = $image->getTricks();
 
         $image->setTricks(null);
+        $this->img->delete($this->getParameter("trick_images_directory") . '/' . $image->getFilename());
 
         $this->em->remove($image);
         $this->em->flush();
