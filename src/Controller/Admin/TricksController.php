@@ -9,6 +9,7 @@ use App\Form\CommentType;
 use App\Form\TricksPictureType;
 use App\Form\TrickType;
 use App\Form\VideoType;
+use App\Services\ImageManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,9 +28,14 @@ class TricksController extends AbstractController
      * @var EntityManagerInterface
      */
     private $em;
+    /**
+     * @var ImageManager
+     */
+    private $img;
 
-    public function __construct(EntityManagerInterface $em) {
+    public function __construct(EntityManagerInterface $em, ImageManager $img) {
         $this->em = $em;
+        $this->img = $img;
     }
 
 
@@ -81,20 +87,12 @@ class TricksController extends AbstractController
         if($imageForm->isSubmitted() && $imageForm->isValid()) {
             $imagePost = $imageForm->get('image')->getData();
             // generate filename
-            $filename = md5(uniqid()) . '.' . $imagePost->guessExtension();
-            // copy image in directory
-            $imagePost->move(
-                $this->getParameter("trick_images_directory"),
-                $filename
-            );
+            $isUploaded = $this->img->setTrickImage($imagePost, $image);
 
-            if(count($trick->getPictures()) === 0) {
-                $image->setIsPrimary(true);
+            if(!$isUploaded) {
+                $this->addFlash("danger", "Attention de bien uploader une image de type jpeg, jpg ou png.");
+                return $this->redirectToRoute("trick_edit", ["slug" => $trick->getSlug()]);
             }
-
-            $image->setFilename($filename);
-            $this->em->persist($image);
-            $this->em->flush();
 
             $this->addFlash("success", "Image ajoutée !");
             return $this->redirectToRoute("trick_edit", ["slug" => $trick->getSlug()]);

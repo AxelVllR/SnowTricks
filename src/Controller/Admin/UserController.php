@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 use App\Entity\Users;
 use App\Form\PasswordUpdateType;
 use App\Form\UserType;
+use App\Services\ImageManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -23,9 +24,14 @@ class UserController extends AbstractController {
      * @var EntityManagerInterface
      */
     private $em;
+    /**
+     * @var ImageManager
+     */
+    private $img;
 
-    public function __construct(EntityManagerInterface $em) {
+    public function __construct(EntityManagerInterface $em, ImageManager $img) {
         $this->em = $em;
+        $this->img = $img;
     }
 
     /**
@@ -42,14 +48,12 @@ class UserController extends AbstractController {
 
             $imagePost = $form->get('image')->getData();
             // generate filename
-            $filename = md5(uniqid()) . '.' . $imagePost->guessExtension();
-            // copy image in directory
-            $imagePost->move(
-                $this->getParameter("user_images_directory"),
-                $filename
-            );
+            $isUploaded = $this->img->setUserImage($imagePost, $user);
 
-            $user->setFilename($filename);
+            if(!$isUploaded) {
+                $this->addFlash("danger", "Attention de bien uploader une image de type jpeg, jpg ou png.");
+                return $this->redirectToRoute("profile");
+            }
 
             $this->em->flush();
 
