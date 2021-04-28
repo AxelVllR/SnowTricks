@@ -53,6 +53,8 @@ php bin/console server:run OU symfony serve
 - Si l'url générée est différente de 'localhost:8000', veillez à bien changer la valeur de APP_URL dans le .env !! Dans le cas contraire, les bouton de réinitialisation du mot de passe et validation de compte dans les mails ne fonctionneront pas.
 
 - ENJOY !
+
+VOIR EN LIGNE : [cliquez-ici](https://snowtricks.axelvallier.fr/)
  
 ## Identifiants de l'utilisateur par défaut
 
