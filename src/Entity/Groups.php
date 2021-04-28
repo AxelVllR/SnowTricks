@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=GroupsRepository::class)
+ * @ORM\Table(name="group_trick")
  */
 class Groups
 {
